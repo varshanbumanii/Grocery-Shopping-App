@@ -1,0 +1,176 @@
+import { Product, Category } from '../types';
+
+// Sample product data
+const sampleProducts: Product[] = [
+  {
+    _id: '1',
+    name: 'Organic Bananas',
+    description: 'Sweet and yellow organic bananas, perfect for smoothies or a quick snack.',
+    price: 2.99,
+    image: 'https://images.pexels.com/photos/47305/bananas-banana-shrub-fruits-yellow-47305.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+    category: 'fruits',
+    unit: 'bunch',
+    stock: 50,
+    organic: true
+  },
+  {
+    _id: '2',
+    name: 'Fresh Strawberries',
+    description: 'Juicy, red strawberries. Perfect for desserts or eating fresh.',
+    price: 4.99,
+    image: 'https://images.pexels.com/photos/46174/strawberries-berries-fruit-freshness-46174.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+    category: 'fruits',
+    unit: '1 lb package',
+    stock: 30,
+    discount: 10
+  },
+  {
+    _id: '3',
+    name: 'Organic Avocados',
+    description: 'Ripe, creamy avocados, perfect for guacamole or avocado toast.',
+    price: 6.99,
+    image: 'https://images.pexels.com/photos/557659/pexels-photo-557659.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+    category: 'fruits',
+    unit: 'pack of 4',
+    stock: 25,
+    organic: true
+  },
+  {
+    _id: '4',
+    name: 'Fresh Broccoli',
+    description: 'Fresh, crisp broccoli. Great for stir-fries or steaming.',
+    price: 1.99,
+    image: 'https://images.pexels.com/photos/161514/brocoli-vegetables-salad-green-161514.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+    category: 'vegetables',
+    unit: 'head',
+    stock: 40
+  },
+  {
+    _id: '5',
+    name: 'Organic Carrots',
+    description: 'Sweet and crunchy organic carrots. Perfect for snacking or cooking.',
+    price: 2.49,
+    image: 'https://images.pexels.com/photos/143133/pexels-photo-143133.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+    category: 'vegetables',
+    unit: '2 lb bag',
+    stock: 35,
+    organic: true
+  },
+  {
+    _id: '6',
+    name: 'Fresh Spinach',
+    description: 'Fresh, leafy spinach. Perfect for salads or cooking.',
+    price: 3.49,
+    image: 'https://images.pexels.com/photos/2325843/pexels-photo-2325843.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+    category: 'vegetables',
+    unit: '10 oz bag',
+    stock: 30,
+    discount: 15
+  },
+  {
+    _id: '7',
+    name: 'Organic Milk',
+    description: 'Fresh, organic whole milk from grass-fed cows.',
+    price: 4.99,
+    image: 'https://images.pexels.com/photos/725998/pexels-photo-725998.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+    category: 'dairy',
+    unit: 'half gallon',
+    stock: 20,
+    organic: true
+  },
+  {
+    _id: '8',
+    name: 'Cheddar Cheese',
+    description: 'Sharp cheddar cheese, aged to perfection.',
+    price: 5.99,
+    image: 'https://images.pexels.com/photos/821365/pexels-photo-821365.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+    category: 'dairy',
+    unit: '8 oz block',
+    stock: 25
+  },
+  {
+    _id: '9',
+    name: 'Greek Yogurt',
+    description: 'Creamy Greek yogurt, perfect for breakfast or as a snack.',
+    price: 3.99,
+    image: 'https://images.pexels.com/photos/376022/pexels-photo-376022.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+    category: 'dairy',
+    unit: '32 oz container',
+    stock: 30,
+    discount: 20
+  },
+  {
+    _id: '10',
+    name: 'Sourdough Bread',
+    description: 'Freshly baked sourdough bread with a crispy crust.',
+    price: 4.49,
+    image: 'https://images.pexels.com/photos/1775043/pexels-photo-1775043.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+    category: 'bakery',
+    unit: 'loaf',
+    stock: 15
+  },
+  {
+    _id: '11',
+    name: 'Chocolate Croissants',
+    description: 'Buttery, flaky croissants with a rich chocolate filling.',
+    price: 6.99,
+    image: 'https://images.pexels.com/photos/2135/food-france-morning-breakfast.jpg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+    category: 'bakery',
+    unit: 'pack of 4',
+    stock: 12,
+    featured: true
+  },
+  {
+    _id: '12',
+    name: 'Grass-Fed Ground Beef',
+    description: 'Lean ground beef from grass-fed cattle. Perfect for burgers and meatballs.',
+    price: 8.99,
+    image: 'https://images.pexels.com/photos/618775/pexels-photo-618775.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+    category: 'meat',
+    unit: '1 lb package',
+    stock: 20,
+    discount: 5
+  }
+];
+
+// This function would normally fetch products from MongoDB
+export const fetchProducts = async (options?: { category?: string | null; search?: string | null }): Promise<Product[]> => {
+  // Simulate API delay
+  await new Promise(resolve => setTimeout(resolve, 500));
+  
+  let filteredProducts = [...sampleProducts];
+  
+  // Filter by category if provided
+  if (options?.category) {
+    filteredProducts = filteredProducts.filter(
+      product => product.category === options.category
+    );
+  }
+  
+  // Filter by search term if provided
+  if (options?.search) {
+    const searchLower = options.search.toLowerCase();
+    filteredProducts = filteredProducts.filter(
+      product => 
+        product.name.toLowerCase().includes(searchLower) ||
+        product.description.toLowerCase().includes(searchLower) ||
+        product.category.toLowerCase().includes(searchLower)
+    );
+  }
+  
+  return filteredProducts;
+};
+
+// Get a single product by ID
+export const getProductById = async (id: string): Promise<Product> => {
+  // Simulate API delay
+  await new Promise(resolve => setTimeout(resolve, 300));
+  
+  const product = sampleProducts.find(p => p._id === id);
+  
+  if (!product) {
+    throw new Error('Product not found');
+  }
+  
+  return product;
+};
